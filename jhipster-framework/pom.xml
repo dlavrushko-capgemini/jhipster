@@ -34,11 +34,9 @@
             <organization>JHipster</organization>
             <organizationUrl>https://www.jhipster.tech/</organizationUrl>
         </developer>
-        <!-- The JHipster core team is listed at https://www.jhipster.tech/team/ -->
     </developers>
 
     <properties>
-        <!--  (All inherited from parent.) -->
     </properties>
 
     <dependencies>
@@ -63,7 +61,7 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>javax.cache</groupId>
+            <groupId>jakarta.cache</groupId>
             <artifactId>cache-api</artifactId>
             <optional>true</optional>
         </dependency>
@@ -233,16 +231,15 @@
                             <artifactId>spring-boot-configuration-processor</artifactId>
                             <version>${spring-boot.version}</version>
                         </path>
-                        <!-- For JPA static metamodel generation -->
                         <path>
                             <groupId>org.hibernate</groupId>
                             <artifactId>hibernate-jpamodelgen</artifactId>
                             <version>${hibernate.version}</version>
                         </path>
                         <path>
-                            <groupId>javax.xml.bind</groupId>
-                            <artifactId>jaxb-api</artifactId>
-                            <version>${jaxb-api.version}</version>
+                            <groupId>jakarta.xml.bind</groupId>
+                            <artifactId>jakarta.xml.bind-api</artifactId>
+                            <version>${jakarta-api.version}</version>
                         </path>
                         <path>
                             <groupId>com.sun.xml.bind</groupId>

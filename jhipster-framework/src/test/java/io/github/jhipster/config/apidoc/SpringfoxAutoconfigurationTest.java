@@ -16,14 +16,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import static io.github.jhipster.config.JHipsterConstants.SPRING_PROFILE_API_DOCS;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasItems;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import io.github.jhipster.config.JHipsterConstants.SPRING_PROFILE_API_DOCS;
+import org.hamcrest.Matchers.hasItem;
+import org.hamcrest.Matchers.hasItems;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(
     classes = SpringfoxAutoconfigurationTest.TestApp.class,
@@ -45,8 +44,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "jhipster.api-docs.servers[0].url=test server url",
         "management.endpoints.web.base-path=/management",
         "spring.application.name=testApp"
-
-    })
+    }
+)
 @ActiveProfiles(SPRING_PROFILE_API_DOCS)
 @AutoConfigureMockMvc
 public class SpringfoxAutoconfigurationTest {
@@ -55,9 +54,35 @@ public class SpringfoxAutoconfigurationTest {
     private MockMvc mockMvc;
 
     @Test
+    void generatesManagementOAS() throws Exception {
+        mockMvc.perform(get("/v3/api-docs?group=management"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.info.title").value("TestApp Management API"))
+            .andExpect(jsonPath("$.info.description").value("Management endpoints documentation"))
+            .andExpect(jsonPath("$.info.version").value("test version"))
+            .andExpect(jsonPath("$.info.termsOfService").doesNotExist())
+            .andExpect(jsonPath("$.info.contact").isEmpty())
+            .andExpect(jsonPath("$.info.license").isEmpty())
+            .andExpect(jsonPath("$.paths./management/health").exists())
+            .andExpect(jsonPath("$.paths./scanned/test").doesNotExist())
+            .andExpect(jsonPath("$.servers.[*].url").value(hasItem("http://localhost:80")));
+    }
+
+    @Test
+        void generatesManagementSwaggerV2() throws Exception {
+            mockMvc.perform(get("/v2/api-docs?group=management"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.paths./management/health").exists())
+                .andExpect(jsonPath("$.host").value("test.jhipster.com"))
+                .andExpect(jsonPath("$.schemes").value(hasItems("http", "https")));
+        }
+
+    @Test
     void generatesOAS() throws Exception {
         mockMvc.perform(get("/v3/api-docs"))
-            .andExpect((status().isOk()))
+            .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.info.title").value("test title"))
             .andExpect(jsonPath("$.info.description").value("test description"))
@@ -70,25 +95,23 @@ public class SpringfoxAutoconfigurationTest {
             .andExpect(jsonPath("$.info.license.url").value("test license url"))
             .andExpect(jsonPath("$.paths./scanned/test").exists())
             .andExpect(jsonPath("$.paths./not-scanned/test").doesNotExist())
-            // TODO: fix bug in Springfox
-            //.andExpect(jsonPath("$.servers.[*].url").value(hasItem("test server url")))
             .andExpect(jsonPath("$.servers.[*].url").value(hasItem("http://localhost:80")));
     }
 
     @Test
-    void generatesSwaggerV2() throws Exception {
-        mockMvc.perform(get("/v2/api-docs"))
-            .andExpect((status().isOk()))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.paths./scanned/test").exists())
-            .andExpect(jsonPath("$.host").value("test.jhipster.com"))
-            .andExpect(jsonPath("$.schemes").value(hasItems("http", "https")));
-    }
+        void generatesSwaggerV2() throws Exception {
+            mockMvc.perform(get("/v2/api-docs"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.paths./scanned/test").exists())
+                .andExpect(jsonPath("$.host").value("test.jhipster.com"))
+                .andExpect(jsonPath("$.schemes").value(hasItems("http", "https")));
+        }
 
     @Test
     void setsPageParameters() throws Exception {
         mockMvc.perform(get("/v3/api-docs"))
-            .andExpect((status().isOk()))
+            .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.paths./scanned/test.get.parameters[?(@.name == 'page')]").exists())
             .andExpect(jsonPath("$.paths./scanned/test.get.parameters[?(@.name == 'page')].in").value("query"))
@@ -101,35 +124,9 @@ public class SpringfoxAutoconfigurationTest {
             .andExpect(jsonPath("$.paths./scanned/test.get.parameters[?(@.name == 'sort')].schema.type").value("array"))
             .andExpect(jsonPath("$.paths./scanned/test.get.parameters[?(@.name == 'sort')].schema.items.type").value("string"));
     }
+}
 
-    @Test
-    void generatesManagementOAS() throws Exception {
-        mockMvc.perform(get("/v3/api-docs?group=management"))
-            .andExpect((status().isOk()))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.info.title").value("TestApp Management API"))
-            .andExpect(jsonPath("$.info.description").value("Management endpoints documentation"))
-            .andExpect(jsonPath("$.info.version").value("test version"))
-            .andExpect(jsonPath("$.info.termsOfService").doesNotExist())
-            .andExpect(jsonPath("$.info.contact").isEmpty())
-            .andExpect(jsonPath("$.info.license").isEmpty())
-            .andExpect(jsonPath("$.paths./management/health").exists())
-            .andExpect(jsonPath("$.paths./scanned/test").doesNotExist())
-            // TODO: fix bug in Springfox
-            //.andExpect(jsonPath("$.servers.[*].url").value(hasItem("test server url")))
-            .andExpect(jsonPath("$.servers.[*].url").value(hasItem("http://localhost:80")));
-    }
-
-    @Test
-    void generatesManagementSwaggerV2() throws Exception {
-        mockMvc.perform(get("/v2/api-docs?group=management"))
-            .andExpect((status().isOk()))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.paths./management/health").exists())
-            .andExpect(jsonPath("$.host").value("test.jhipster.com"))
-            .andExpect(jsonPath("$.schemes").value(hasItems("http", "https")));    }
-
-    @SpringBootApplication(
+@SpringBootApplication(
         scanBasePackages = "io.github.jhipster.config.apidoc",
         exclude = {
             SecurityAutoConfiguration.class,
@@ -138,17 +135,22 @@ public class SpringfoxAutoconfigurationTest {
             DataSourceTransactionManagerAutoConfiguration.class,
             HibernateJpaAutoConfiguration.class
         })
-    @Controller
-    static class TestApp {
-        @GetMapping("/scanned/test")
-        public void scanned(Pageable pageable) {
-        }
-
-        @GetMapping("/not-scanned/test")
-        public void notscanned(Pageable pageable) {
-        }
+@Controller
+static
+class TestApp {
+    @GetMapping("/scanned/test")
+    public void scanned(Pageable pageable) {
     }
 
+    @GetMapping("/not-scanned/test")
+    public void notscanned(Pageable pageable) {
+    }
+
+    @GetMapping("/not-scanned/test")
+    public void notscanned(Pageable pageable) {
+    }
+
+    @GetMapping("/scanned/test")
+    public void scanned(Pageable pageable) {
+    }
 }
-
-

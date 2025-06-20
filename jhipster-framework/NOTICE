@@ -1,4 +1,27 @@
-JHipster Framework.
-Copyright 2016-2020 the original author or authors from the JHipster project.
+import jakarta.persistence.*;
+import org.springframework.web.bind.annotation.*;
 
-For more information on the JHipster project, see https://www.jhipster.tech/
+@RestController
+@RequestMapping("/api")
+public class MyController {
+
+    @GetMapping("/items")
+    public List<Item> getItems() {
+        return itemService.findAll();
+    }
+
+    @PostMapping("/items")
+    public Item createItem(@RequestBody Item item) {
+        return itemService.save(item);
+    }
+
+    @PutMapping("/items/{id}")
+    public Item updateItem(@PathVariable Long id, @RequestBody Item item) {
+        return itemService.update(id, item);
+    }
+
+    @DeleteMapping("/items/{id}")
+    public void deleteItem(@PathVariable Long id) {
+        itemService.delete(id);
+    }
+}
