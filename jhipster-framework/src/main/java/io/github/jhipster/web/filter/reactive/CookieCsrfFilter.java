@@ -9,17 +9,11 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-
 import java.util.Optional;
 
-/**
- * <p>CookieCsrfFilter class.</p>
- */
 public class CookieCsrfFilter implements WebFilter {
-
     private static final String CSRF_COOKIE_NAME = "XSRF-TOKEN";
 
-    /** {@inheritDoc} */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         if (exchange.getRequest().getCookies().get(CSRF_COOKIE_NAME) != null) {
@@ -45,4 +39,3 @@ public class CookieCsrfFilter implements WebFilter {
         return StringUtils.hasLength(contextPath) ? contextPath : "/";
     }
 }
-

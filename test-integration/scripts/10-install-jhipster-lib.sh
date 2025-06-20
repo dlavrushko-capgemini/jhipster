@@ -1,11 +1,9 @@
+```bash
 #!/bin/bash
 
 set -e
 source $(dirname $0)/00-init-env.sh
 
-#-------------------------------------------------------------------------------
-# Install JHipster Dependencies and Server-side library
-#-------------------------------------------------------------------------------
 cd "$HOME"
 if [[ "$JHI_REPO" == *"/jhipster" ]]; then
     echo "*** jhipster: use local version at JHI_REPO=$JHI_REPO"
@@ -43,9 +41,6 @@ else
     ls -al ~/.m2/repository/io/github/jhipster/jhipster-parent/
 fi
 
-#-------------------------------------------------------------------------------
-# Install JHipster Generator
-#-------------------------------------------------------------------------------
 cd "$HOME"
 if [[ "$JHI_REPO" == *"/generator-jhipster" ]]; then
     echo "*** generator-jhipster: use local version at JHI_REPO=$JHI_REPO"
@@ -79,9 +74,5 @@ else
     npm install -g "$HOME"/generator-jhipster
 fi
 
-#-------------------------------------------------------------------------------
-# Override config
-#-------------------------------------------------------------------------------
-
-# replace 00-init-env.sh
 cp "$JHI_CLONED"/test-integration/scripts/00-init-env.sh "$JHI_HOME"/test-integration/scripts/
+```

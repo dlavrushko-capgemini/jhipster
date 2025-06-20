@@ -1,58 +1,37 @@
-/*
- * Copyright 2016-2020 the original author or authors from the JHipster project.
- *
- * This file is part of the JHipster project, see https://www.jhipster.tech/
- * for more information.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package io.github.jhipster.service.filter;
 
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.assertj.core.api.Assertions;
 
 public class LocalDateFilterTest {
-
+    
     private LocalDateFilter filter;
 
     private LocalDate value = LocalDate.now();
 
     @BeforeEach
-    public void setup() {
-        filter = new LocalDateFilter();
-    }
+        public void setup() {
+            filter = new LocalDateFilter();
+        }
 
     @Test
-    public void testConstructor() {
-        assertThat(filter.getEquals()).isNull();
-        assertThat(filter.getNotEquals()).isNull();
-        assertThat(filter.getSpecified()).isNull();
-        assertThat(filter.getIn()).isNull();
-        assertThat(filter.getNotIn()).isNull();
-        assertThat(filter.getGreaterThan()).isNull();
-        assertThat(filter.getLessThan()).isNull();
-        assertThat(filter.getGreaterThanOrEqual()).isNull();
-        assertThat(filter.getLessThanOrEqual()).isNull();
-        assertThat(filter.toString()).isEqualTo("LocalDateFilter []");
-    }
+        public void testConstructor() {
+            assertThat(filter.getEquals()).isNull();
+            assertThat(filter.getNotEquals()).isNull();
+            assertThat(filter.getSpecified()).isNull();
+            assertThat(filter.getIn()).isNull();
+            assertThat(filter.getNotIn()).isNull();
+            assertThat(filter.getGreaterThan()).isNull();
+            assertThat(filter.getLessThan()).isNull();
+            assertThat(filter.getGreaterThanOrEqual()).isNull();
+            assertThat(filter.getLessThanOrEqual()).isNull();
+            assertThat(filter.toString()).isEqualTo("LocalDateFilter []");
+        }
 
     @Test
     public void testCopy() {
@@ -71,71 +50,6 @@ public class LocalDateFilterTest {
     }
 
     @Test
-    public void testSetEquals() {
-        Filter<LocalDate> chain = filter.setEquals(value);
-        assertThat(chain).isEqualTo(filter);
-        assertThat(filter.getEquals()).isEqualTo(value);
-    }
-
-    @Test
-    public void testSetNotEquals() {
-        Filter<LocalDate> chain = filter.setNotEquals(value);
-        assertThat(chain).isEqualTo(filter);
-        assertThat(filter.getNotEquals()).isEqualTo(value);
-    }
-
-    @Test
-    public void testSetSpecified() {
-        Filter<LocalDate> chain = filter.setSpecified(true);
-        assertThat(chain).isEqualTo(filter);
-        assertThat(filter.getSpecified()).isEqualTo(true);
-    }
-
-    @Test
-    public void testSetIn() {
-        List<LocalDate> list = new LinkedList<>();
-        Filter<LocalDate> chain = filter.setIn(list);
-        assertThat(chain).isEqualTo(filter);
-        assertThat(filter.getIn()).isEqualTo(list);
-    }
-
-    @Test
-    public void testSetNotIn() {
-        List<LocalDate> list = new LinkedList<>();
-        Filter<LocalDate> chain = filter.setNotIn(list);
-        assertThat(chain).isEqualTo(filter);
-        assertThat(filter.getNotIn()).isEqualTo(list);
-    }
-
-    @Test
-    public void testSetGreaterThan() {
-        Filter<LocalDate> chain = filter.setGreaterThan(value);
-        assertThat(chain).isEqualTo(filter);
-        assertThat(filter.getGreaterThan()).isEqualTo(value);
-    }
-
-    @Test
-    public void testSetLessThan() {
-        Filter<LocalDate> chain = filter.setLessThan(value);
-        assertThat(chain).isEqualTo(filter);
-        assertThat(filter.getLessThan()).isEqualTo(value);
-    }
-
-    @Test
-    public void testSetGreaterThanOrEqual() {
-        Filter<LocalDate> chain = filter.setGreaterThanOrEqual(value);
-        assertThat(chain).isEqualTo(filter);
-        assertThat(filter.getGreaterThanOrEqual()).isEqualTo(value);
-    }
-
-    @Test
-    public void testSetLessThanOrEqual() {
-        Filter<LocalDate> chain = filter.setLessThanOrEqual(value);
-        assertThat(chain).isEqualTo(filter);
-        assertThat(filter.getLessThanOrEqual()).isEqualTo(value);
-    }
-
-    @Test
     public void testEquals() {
         final LocalDateFilter filter2 = new LocalDateFilter();
         assertThat(filter).isEqualTo(filter2);
@@ -149,13 +63,13 @@ public class LocalDateFilterTest {
         assertThat(filter2).isNotEqualTo(filter);
         filter2.setSpecified(false);
         assertThat(filter).isEqualTo(filter2);
-        filter.setIn(Lists.newArrayList(value, value));
+        filter.setIn(List.of(value, value));
         assertThat(filter2).isNotEqualTo(filter);
-        filter2.setIn(Lists.newArrayList(value, value));
+        filter2.setIn(List.of(value, value));
         assertThat(filter).isEqualTo(filter2);
-        filter.setNotIn(Lists.newArrayList(value, value));
+        filter.setNotIn(List.of(value, value));
         assertThat(filter2).isNotEqualTo(filter);
-        filter2.setNotIn(Lists.newArrayList(value, value));
+        filter2.setNotIn(List.of(value, value));
         assertThat(filter).isEqualTo(filter2);
         filter.setGreaterThan(value);
         assertThat(filter).isNotEqualTo(filter2);
@@ -192,11 +106,11 @@ public class LocalDateFilterTest {
         filter.setSpecified(false);
         filter2.setSpecified(false);
         assertThat(filter.hashCode()).isEqualTo(filter2.hashCode());
-        filter.setIn(Lists.newArrayList(value, value));
-        filter2.setIn(Lists.newArrayList(value, value));
+        filter.setIn(List.of(value, value));
+        filter2.setIn(List.of(value, value));
         assertThat(filter.hashCode()).isEqualTo(filter2.hashCode());
-        filter.setNotIn(Lists.newArrayList(value, value));
-        filter2.setNotIn(Lists.newArrayList(value, value));
+        filter.setNotIn(List.of(value, value));
+        filter2.setNotIn(List.of(value, value));
         assertThat(filter.hashCode()).isEqualTo(filter2.hashCode());
         filter.setGreaterThan(value);
         filter2.setGreaterThan(value);
@@ -213,6 +127,71 @@ public class LocalDateFilterTest {
     }
 
     @Test
+        public void testSetEquals() {
+            Filter<LocalDate> chain = filter.setEquals(value);
+            assertThat(chain).isEqualTo(filter);
+            assertThat(filter.getEquals()).isEqualTo(value);
+        }
+
+    @Test
+        public void testSetGreaterThan() {
+            Filter<LocalDate> chain = filter.setGreaterThan(value);
+            assertThat(chain).isEqualTo(filter);
+            assertThat(filter.getGreaterThan()).isEqualTo(value);
+        }
+
+    @Test
+        public void testSetGreaterThanOrEqual() {
+            Filter<LocalDate> chain = filter.setGreaterThanOrEqual(value);
+            assertThat(chain).isEqualTo(filter);
+            assertThat(filter.getGreaterThanOrEqual()).isEqualTo(value);
+        }
+
+    @Test
+        public void testSetIn() {
+            List<LocalDate> list = new LinkedList<>();
+            Filter<LocalDate> chain = filter.setIn(list);
+            assertThat(chain).isEqualTo(filter);
+            assertThat(filter.getIn()).isEqualTo(list);
+        }
+
+    @Test
+        public void testSetLessThan() {
+            Filter<LocalDate> chain = filter.setLessThan(value);
+            assertThat(chain).isEqualTo(filter);
+            assertThat(filter.getLessThan()).isEqualTo(value);
+        }
+
+    @Test
+        public void testSetLessThanOrEqual() {
+            Filter<LocalDate> chain = filter.setLessThanOrEqual(value);
+            assertThat(chain).isEqualTo(filter);
+            assertThat(filter.getLessThanOrEqual()).isEqualTo(value);
+        }
+
+    @Test
+        public void testSetNotEquals() {
+            Filter<LocalDate> chain = filter.setNotEquals(value);
+            assertThat(chain).isEqualTo(filter);
+            assertThat(filter.getNotEquals()).isEqualTo(value);
+        }
+
+    @Test
+        public void testSetNotIn() {
+            List<LocalDate> list = new LinkedList<>();
+            Filter<LocalDate> chain = filter.setNotIn(list);
+            assertThat(chain).isEqualTo(filter);
+            assertThat(filter.getNotIn()).isEqualTo(list);
+        }
+
+    @Test
+        public void testSetSpecified() {
+            Filter<LocalDate> chain = filter.setSpecified(true);
+            assertThat(chain).isEqualTo(filter);
+            assertThat(filter.getSpecified()).isEqualTo(true);
+        }
+
+    @Test
     public void testToString() {
         filter.setEquals(value);
         filter.setNotEquals(value);
@@ -224,6 +203,8 @@ public class LocalDateFilterTest {
         filter.setGreaterThanOrEqual(value);
         filter.setLessThanOrEqual(value);
         String str = value.toString();
-        assertThat(filter.toString()).isEqualTo("LocalDateFilter [equals=" + str + ", notEquals=" + str + ", specified=true, in=[], notIn=[], greaterThan=" + str + ", lessThan=" + str + ", greaterThanOrEqual=" + str + ", lessThanOrEqual=" + str + "]");
+        assertThat(filter.toString()).isEqualTo("""
+            LocalDateFilter [equals=%s, notEquals=%s, specified=true, in=[], notIn=[], greaterThan=%s, lessThan=%s, greaterThanOrEqual=%s, lessThanOrEqual=%s]
+            """.formatted(str, str, str, str, str, str));
     }
 }
