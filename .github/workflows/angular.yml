@@ -28,7 +28,7 @@ on:
             - '*'
 env:
     JHI_RUN_APP: 1
-    JHI_JDK: 11
+    JHI_JDK: 21
     # this version is used for testing with CICD
     JHI_VERSION: 0.0.0-CICD
     JHI_LIB_REPO: https://github.com/jhipster/jhipster.git
@@ -149,7 +149,7 @@ jobs:
                   node-version: ${{ matrix.node_version }}
             - uses: actions/setup-java@v1
               with:
-                  java-version: '11.x'
+                  java-version: '21.x'
             - name: 'ENV: display variables'
               run: $JHI_LIB_SCRIPTS/01-display-configuration.sh
             - name: 'TOOLS: configure tools installed by the system'
