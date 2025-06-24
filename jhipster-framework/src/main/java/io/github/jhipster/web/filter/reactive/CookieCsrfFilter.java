@@ -9,17 +9,11 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-
 import java.util.Optional;
 
-/**
- * <p>CookieCsrfFilter class.</p>
- */
 public class CookieCsrfFilter implements WebFilter {
-
     private static final String CSRF_COOKIE_NAME = "XSRF-TOKEN";
 
-    /** {@inheritDoc} */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         if (exchange.getRequest().getCookies().get(CSRF_COOKIE_NAME) != null) {
@@ -33,7 +27,7 @@ public class CookieCsrfFilter implements WebFilter {
                     .maxAge(-1)
                     .httpOnly(false)
                     .path(getRequestContext(exchange.getRequest()))
-                    .secure(Optional.ofNullable(exchange.getRequest().getSslInfo()).isPresent())
+                    .secure(exchange.getRequest().getSslInfo() != null)
                     .build();
                 exchange.getResponse().getCookies().add(CSRF_COOKIE_NAME, cookie);
             })
@@ -42,7 +36,9 @@ public class CookieCsrfFilter implements WebFilter {
 
     private String getRequestContext(ServerHttpRequest request) {
         String contextPath = request.getPath().contextPath().value();
-        return StringUtils.hasLength(contextPath) ? contextPath : "/";
+        return switch (contextPath) {
+            case "" -> "/";
+            default -> contextPath;
+        };
     }
 }
-

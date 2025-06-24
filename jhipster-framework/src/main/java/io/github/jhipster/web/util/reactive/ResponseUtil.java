@@ -6,9 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
-/**
- * Utility class for ResponseEntity creation in a reactive context.
- */
 public interface ResponseUtil {
     /**
      * Wrap the mono into a {@link org.springframework.http.ResponseEntity} with an {@link org.springframework.http.HttpStatus#OK} status, or if it's empty, it
