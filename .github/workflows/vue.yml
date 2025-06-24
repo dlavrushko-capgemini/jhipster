@@ -1,22 +1,3 @@
-#
-# Copyright 2013-2020 the original author or authors from the JHipster project.
-#
-# This file is part of the JHipster project, see https://www.jhipster.tech/
-# for more information.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
 name: Vue
 on:
     push:
@@ -28,8 +9,7 @@ on:
             - '*'
 env:
     JHI_RUN_APP: 1
-    JHI_JDK: 11
-    # this version is used for testing with CICD
+    JHI_JDK: 21
     JHI_VERSION: 0.0.0-CICD
     JHI_LIB_REPO: https://github.com/jhipster/jhipster.git
     JHI_LIB_BRANCH: main
@@ -67,7 +47,6 @@ jobs:
                     - vue-gradle-session
                     - vue-ws-theme
                     - vue-oauth2
-#                    - vue-couchbase
                     - vue-mongodb-kafka-cucumber
                     - vue-session-cassandra-fr
                 include:
@@ -106,11 +85,6 @@ jobs:
                       profile: prod
                       war: 0
                       e2e: 1
-#                    - app-type: vue-couchbase
-#                      entity: couchbase
-#                      profile: dev,webpack
-#                      war: 0
-#                      e2e: 1
                     - app-type: vue-mongodb-kafka-cucumber
                       entity: mongodb
                       profile: dev,webpack
@@ -128,26 +102,20 @@ jobs:
             JHI_WAR: ${{ matrix.war }}
             JHI_E2E: ${{ matrix.e2e }}
         steps:
-            #----------------------------------------------------------------------
-            # Install all tools and check configuration
-            #----------------------------------------------------------------------
             - name: 'SETUP: Checkout generator-jhipster'
               uses: actions/checkout@v2
             - uses: actions/setup-node@v2.1.2
               with:
                   node-version: ${{ matrix.node_version }}
-            - uses: actions/setup-java@v1
+            - uses: actions/setup-java@v2
               with:
-                  java-version: '11.x'
+                  java-version: '21.x'
             - name: 'ENV: display variables'
               run: $JHI_LIB_SCRIPTS/01-display-configuration.sh
             - name: 'TOOLS: configure tools installed by the system'
               run: $JHI_LIB_SCRIPTS/03-system.sh
             - name: 'TOOLS: configure git'
               run: $JHI_LIB_SCRIPTS/04-git-config.sh
-            #----------------------------------------------------------------------
-            # Install JHipster and generate project+entities
-            #----------------------------------------------------------------------
             - name: 'GENERATION: install JHipster'
               run: $JHI_LIB_SCRIPTS/10-install-jhipster-lib.sh
             - name: 'GENERATION: entities'
@@ -158,9 +126,6 @@ jobs:
               run: $JHI_SCRIPTS/13-replace-version-generated-project.sh
             - name: 'GENERATION: jhipster info'
               run: $JHI_SCRIPTS/14-jhipster-info.sh
-            #----------------------------------------------------------------------
-            # Launch tests
-            #----------------------------------------------------------------------
             - name: 'TESTS: Start docker-compose containers'
               run: $JHI_SCRIPTS/20-docker-compose.sh
             - name: 'TESTS: backend'

@@ -1,56 +1,18 @@
-/*
- * Copyright 2016-2020 the original author or authors from the JHipster project.
- *
- * This file is part of the JHipster project, see https://www.jhipster.tech/
- * for more information.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package io.github.jhipster.config.h2;
 
-import javax.servlet.Servlet;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
+import jakarta.servlet.Servlet;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletRegistration;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
 
-/**
- * Utility class to configure H2 in development.
- * <p>
- * We don't want to include H2 when we are packaging for the "prod" profile and won't
- * actually need it, so we have to load / invoke things at runtime through reflection.
- */
 public class H2ConfigurationHelper {
 
-    /**
-     * <p>createServer.</p>
-     *
-     * @return a {@link java.lang.Object} object.
-     * @throws java.sql.SQLException if any.
-     */
     public static Object createServer() throws SQLException {
         return createServer("9092");
     }
 
-    /**
-     * <p>createServer.</p>
-     *
-     * @param port a {@link java.lang.String} object.
-     * @return a {@link java.lang.Object} object.
-     * @throws java.sql.SQLException if any.
-     */
     public static Object createServer(String port) throws SQLException {
         try {
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -76,15 +38,8 @@ public class H2ConfigurationHelper {
         }
     }
 
-    /**
-     * <p>initH2Console.</p>
-     *
-     * @param servletContext a {@link javax.servlet.ServletContext} object.
-     */
     public static void initH2Console(ServletContext servletContext) {
         try {
-            // We don't want to include H2 when we are packaging for the "prod" profile and won't
-            // actually need it, so we have to load / invoke things at runtime through reflection.
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             Class<?> servletClass = Class.forName("org.h2.server.web.WebServlet", true, loader);
             Servlet servlet = (Servlet) servletClass.getDeclaredConstructor().newInstance();
